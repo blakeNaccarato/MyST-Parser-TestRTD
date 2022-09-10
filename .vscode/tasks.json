@@ -6,6 +6,16 @@
   "version": "2.0.0",
   "tasks": [
     // * -------------------------------------------------------------------------- * //
+    // * PROJECT-SPECIFIC * //
+    {
+      "label": "task: tox",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "tox"],
+      "problemMatcher": []
+    },
+
+    // * -------------------------------------------------------------------------- * //
     // * GIT * //
     {
       "label": "git: Rebase back to fork",

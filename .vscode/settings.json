@@ -1,6 +1,11 @@
 {
   // * -------------------------------------------------------------------------- * //
   // * PROJECT-SPECIFIC * //
+  "esbonio.server.hideSphinxOutput": false,
+  "esbonio.server.enabled": true,
+  "esbonio.server.enabledInPyFiles": true,
+  "esbonio.sphinx.confDir": "docs",
+  "esbonio.sphinx.forceFullBuild": true,
 
   // Environment variables don't load properly otherwise
   // See: https://github.com/microsoft/vscode-python/issues/944#issuecomment-808516207

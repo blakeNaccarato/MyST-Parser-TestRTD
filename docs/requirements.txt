@@ -1,0 +1,8 @@
+ipython
+linkify-it-py~=1.0
+sphinx-book-theme
+sphinx-design
+sphinxcontrib.mermaid~=0.7.1
+sphinxext-opengraph~=0.6.3
+sphinxext-rediraffe~=0.2.7
+sphinx-autobuild==2021.03.14
