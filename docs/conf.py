@@ -1,7 +1,6 @@
 from datetime import date
 
 from myst_parser import __version__
-from sphinx.application import Sphinx
 
 project = "Project"
 copyright = f"{date.today().year}, Blake Naccarato"

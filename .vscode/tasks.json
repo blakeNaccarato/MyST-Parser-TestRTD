@@ -8,13 +8,15 @@
     // * -------------------------------------------------------------------------- * //
     // * PROJECT-SPECIFIC * //
     {
-      "label": "task: tox",
+      "label": "task: test",
       "type": "process",
       "command": "pwsh",
-      "args": ["-Command", "tox"],
+      "args": [
+        "-Command",
+        "sphinx-autobuild --re-ignore _build/.* --open-browser -n -b html docs/ docs/_build/html"
+      ],
       "problemMatcher": []
     },
-
     // * -------------------------------------------------------------------------- * //
     // * GIT * //
     {
