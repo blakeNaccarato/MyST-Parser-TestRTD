@@ -1,0 +1,16 @@
+{
+  "ignore": [".tools"],
+  "include": ["src"],
+  "extraPaths": ["tests", "examples"],
+  "typeCheckingMode": "strict",
+  "reportMissingParameterType": "none",
+  "reportMissingTypeStubs": "none",
+  "reportUnknownArgumentType": "none",
+  "reportUnknownLambdaType": "none",
+  "reportUnknownMemberType": "none",
+  "reportUnknownParameterType": "none",
+  "reportUnknownVariableType": "none",
+  "reportUntypedBaseClass": "none",
+  "useLibraryCodeForTypes": true,
+  "reportUnnecessaryTypeIgnoreComment": true
+}
