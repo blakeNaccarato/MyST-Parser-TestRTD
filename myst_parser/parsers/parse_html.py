@@ -249,13 +249,12 @@ class TerminalElement(Element):
     def __repr__(self) -> str:
         text = self.data
         if len(text) > 20:
-            text = text[:17] + "..."
+            text = f"{text[:17]}..."
         return f"{self.__class__.__name__}({text!r})"
 
     def deepcopy(self) -> TerminalElement:
         """Copy and remove parent."""
-        _copy = self.__class__(self.data)
-        return _copy
+        return self.__class__(self.data)
 
 
 class Data(TerminalElement):

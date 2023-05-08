@@ -28,7 +28,7 @@ from .dc_validators import (
 def check_extensions(_, __, value):
     if not isinstance(value, Iterable):
         raise TypeError(f"'enable_extensions' not iterable: {value}")
-    diff = set(value).difference(
+    if diff := set(value).difference(
         [
             "amsmath",
             "colon_fence",
@@ -44,8 +44,7 @@ def check_extensions(_, __, value):
             "substitution",
             "tasklist",
         ]
-    )
-    if diff:
+    ):
         raise ValueError(f"'enable_extensions' items not recognised: {diff}")
 
 
@@ -387,7 +386,7 @@ def read_topmatter(text: Union[str, Iterator[str]]) -> Optional[Dict[str, Any]]:
     if isinstance(text, str):
         if not text.startswith("---"):  # skip creating the line list in memory
             return None
-        text = (line for line in text.splitlines())
+        text = iter(text.splitlines())
     try:
         if not next(text).startswith("---"):
             return None

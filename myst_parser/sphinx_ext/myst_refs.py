@@ -69,15 +69,15 @@ class MystReferenceResolver(ReferencesResolver):
                         )
                     finally:
                         node["reftype"] = "myst"
-                    # still not found? warn if node wishes to be warned about or
-                    # we are in nit-picky mode
-                    if newnode is None:
-                        node["refdomain"] = ""
-                        # TODO ideally we would override the warning message here,
-                        # to show the [ref.myst] for suppressing warning
-                        self.warn_missing_reference(
-                            refdoc, node["reftype"], target, node, domain
-                        )
+                # still not found? warn if node wishes to be warned about or
+                # we are in nit-picky mode
+                if newnode is None:
+                    node["refdomain"] = ""
+                    # TODO ideally we would override the warning message here,
+                    # to show the [ref.myst] for suppressing warning
+                    self.warn_missing_reference(
+                        refdoc, node["reftype"], target, node, domain
+                    )
             except NoUri:
                 newnode = contnode
 
@@ -130,7 +130,7 @@ class MystReferenceResolver(ReferencesResolver):
                     key = (objtype, target.lower())
                 if key in stddomain.objects:
                     docname, labelid = stddomain.objects[key]
-                    domain_role = "std:" + stddomain.role_for_objtype(objtype)
+                    domain_role = f"std:{stddomain.role_for_objtype(objtype)}"
                     ref_node = make_refnode(
                         self.app.builder, refdoc, docname, labelid, contnode
                     )
@@ -219,7 +219,7 @@ class MystReferenceResolver(ReferencesResolver):
             doc_path = os.path.normpath(
                 os.path.join(node.get("refdoc", fromdocname), "..", rel_path)
             )
-        return self._resolve_ref_nested(node, fromdocname, doc_path + "#" + anchor)
+        return self._resolve_ref_nested(node, fromdocname, f"{doc_path}#{anchor}")
 
     def _resolve_ref_nested(
         self, node: pending_xref, fromdocname: str, target=None
@@ -261,12 +261,13 @@ class MystReferenceResolver(ReferencesResolver):
         refdoc = node.get("refdoc", fromdocname)
         docname = docname_join(refdoc, node["reftarget"])
 
+        if (
+            docname not in self.env.all_docs
+            and os.path.splitext(docname)[1] in self.env.config.source_suffix
+        ):
+            docname = os.path.splitext(docname)[0]
         if docname not in self.env.all_docs:
-            # try stripping known extensions from doc name
-            if os.path.splitext(docname)[1] in self.env.config.source_suffix:
-                docname = os.path.splitext(docname)[0]
-            if docname not in self.env.all_docs:
-                return None
+            return None
 
         if node["refexplicit"]:
             # reference with explicit title

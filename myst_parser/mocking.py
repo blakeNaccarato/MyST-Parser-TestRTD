@@ -211,7 +211,6 @@ class MockState:
 
            -- Buckaroo Banzai
         """
-        elements = []
         # split attribution
         last_line_blank = False
         blockquote_lines = lines
@@ -241,7 +240,7 @@ class MockState:
         # parse block
         blockquote = nodes.block_quote()
         self.nested_parse(blockquote_lines, line_offset, blockquote)
-        elements.append(blockquote)
+        elements = [blockquote]
         # parse attribution
         if attribution_lines:
             attribution_text = "\n".join(attribution_lines)
@@ -379,10 +378,7 @@ class MockIncludeDirective:
             file_content = path.read_text(encoding=encoding, errors=error_handler)
         except Exception as error:
             raise DirectiveError(
-                4,
-                'Directive "{}": error reading file: {}\n{}.'.format(
-                    self.name, path, error
-                ),
+                4, f'Directive "{self.name}": error reading file: {path}\n{error}.'
             )
 
         # get required section of text
@@ -398,9 +394,7 @@ class MockIncludeDirective:
             if split_index < 0:
                 raise DirectiveError(
                     4,
-                    'Directive "{}"; option "{}": text not found "{}".'.format(
-                        self.name, split_on_type, split_on
-                    ),
+                    f'Directive "{self.name}"; option "{split_on_type}": text not found "{split_on}".',
                 )
             if split_on_type == "start-after":
                 startline += split_index + len(split_on)

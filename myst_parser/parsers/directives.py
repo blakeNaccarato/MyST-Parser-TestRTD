@@ -106,8 +106,7 @@ def parse_directive_options(
     options: dict[str, Any] = {}
     if content.startswith("---"):
         content = "\n".join(content.splitlines()[1:])
-        match = re.search(r"^-{3,}", content, re.MULTILINE)
-        if match:
+        if match := re.search(r"^-{3,}", content, re.MULTILINE):
             yaml_block = content[: match.start()]
             content = content[match.end() + 1 :]  # TODO advance line number
         else:
@@ -117,7 +116,7 @@ def parse_directive_options(
         try:
             options = yaml.safe_load(yaml_block) or {}
         except (yaml.parser.ParserError, yaml.scanner.ScannerError) as error:
-            raise DirectiveParsingError("Invalid options YAML: " + str(error))
+            raise DirectiveParsingError(f"Invalid options YAML: {str(error)}")
     elif content.lstrip().startswith(":"):
         content_lines = content.splitlines()  # type: list
         yaml_lines = []
@@ -130,7 +129,7 @@ def parse_directive_options(
         try:
             options = yaml.safe_load(yaml_block) or {}
         except (yaml.parser.ParserError, yaml.scanner.ScannerError) as error:
-            raise DirectiveParsingError("Invalid options YAML: " + str(error))
+            raise DirectiveParsingError(f"Invalid options YAML: {str(error)}")
         if not isinstance(options, dict):
             raise DirectiveParsingError(f"Invalid options (not dict): {options}")
 
@@ -160,9 +159,7 @@ def parse_directive_options(
             converted_value = convertor(value)
         except (ValueError, TypeError) as error:
             raise DirectiveParsingError(
-                "Invalid option value: (option: '{}'; value: {})\n{}".format(
-                    name, value, error
-                )
+                f"Invalid option value: (option: '{name}'; value: {value})\n{error}"
             )
         options[name] = converted_value
 
@@ -183,8 +180,6 @@ def parse_directive_arguments(directive, arg_text):
             arguments = arg_text.split(None, required + optional - 1)
         else:
             raise DirectiveParsingError(
-                "maximum {} argument(s) allowed, {} supplied".format(
-                    required + optional, len(arguments)
-                )
+                f"maximum {required + optional} argument(s) allowed, {len(arguments)} supplied"
             )
     return arguments

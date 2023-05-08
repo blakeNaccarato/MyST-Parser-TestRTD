@@ -35,8 +35,7 @@ class _ConfigBase(SphinxDirective):
 
     @staticmethod
     def field_default(value):
-        default = " ".join(f"{value!r}".splitlines())
-        return default
+        return " ".join(f"{value!r}".splitlines())
 
     @staticmethod
     def field_type(field):
@@ -79,13 +78,13 @@ class MystConfigDirective(_ConfigBase):
             if "extensions" in self.options:
                 if not field.metadata.get("extension"):
                     continue
-            else:
-                if field.metadata.get("extension"):
-                    continue
+            elif field.metadata.get("extension"):
+                continue
 
-            if self.options.get("scope") == "local":
-                if field.metadata.get("global_only"):
-                    continue
+            if self.options.get("scope") == "local" and field.metadata.get(
+                "global_only"
+            ):
+                continue
 
             if self.options.get("scope") == "global":
                 name = f"myst_{name}"
@@ -193,6 +192,4 @@ def convert_opt(name, func):
         return "length or unitless"
     if func is directives.length_or_percentage_or_unitless:
         return "length, percentage or unitless"
-    if func is other.int_or_nothing:
-        return "integer"
-    return ""
+    return "integer" if func is other.int_or_nothing else ""

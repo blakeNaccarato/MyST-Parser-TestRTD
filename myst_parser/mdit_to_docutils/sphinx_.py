@@ -121,7 +121,7 @@ class SphinxRenderer(DocutilsRenderer):
                 refwarn=False,
             )
             classes = ["xref", "download", "myst"]
-            text = destination if not token.children else ""
+            text = "" if token.children else destination
         else:
             wrap_node = addnodes.pending_xref(
                 refdoc=self.doc_env.docname,
@@ -135,8 +135,7 @@ class SphinxRenderer(DocutilsRenderer):
             text = ""
 
         self.add_line_and_source_path(wrap_node, token)
-        title = token.attrGet("title")
-        if title:
+        if title := token.attrGet("title"):
             wrap_node["title"] = title
         self.current_node.append(wrap_node)
 
@@ -163,7 +162,7 @@ class SphinxRenderer(DocutilsRenderer):
             return
 
         section = self.current_node
-        doc_slug = self.doc_env.doc2path(self.doc_env.docname, base=False) + "#" + slug
+        doc_slug = f"{self.doc_env.doc2path(self.doc_env.docname, base=False)}#{slug}"
 
         # save the reference in the standard domain, so that it can be handled properly
         domain = cast(StandardDomain, self.doc_env.get_domain("std"))
@@ -239,7 +238,7 @@ class SphinxRenderer(DocutilsRenderer):
         node["docname"] = self.doc_env.docname
 
         # create target node
-        node_id = nodes.make_id("equation-%s" % node["label"])
+        node_id = nodes.make_id(f'equation-{node["label"]}')
         target = nodes.target("", "", ids=[node_id])
         self.document.note_explicit_target(target)
         return target

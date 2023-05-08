@@ -129,7 +129,7 @@ def attr_to_optparse_option(
     flag = "--" + name.replace("_", "-")
     options = {"dest": name, "default": DOCUTILS_UNSET}
     at_options, type_str = _attr_to_optparse_option(attribute, default)
-    options.update(at_options)
+    options |= at_options
     help_str = attribute.metadata.get("help", "") if attribute.metadata else ""
     return (f"{help_str} {type_str}", [flag], options)
 
